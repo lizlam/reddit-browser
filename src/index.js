@@ -124,7 +124,7 @@ class Subreddits extends React.Component {
   }
 
   render() {
-    const { subreddits, clicked, selectedSub, selectedPost, hot } = this.state;
+    const { subreddits, selectedSub, selectedPost } = this.state;
     return (
       <Container>
         <TopHeader>
