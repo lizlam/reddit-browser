@@ -42,9 +42,9 @@ const Input = styled.input`
   font-size: 60px;
   background-color: #b19cd9;
   border: none;
-  box-shadow: 
+  box-shadow:
     inset 0 0 8px  rgba(0,0,0,0.1),
-          0 0 16px rgba(0,0,0,0.1); 
+          0 0 16px rgba(0,0,0,0.1);
   width: 400px;
   text-align: center;
   margin: 20px;
@@ -59,16 +59,16 @@ const Button = styled.button`
   background-color: #b19cd9;
   border: none;
 `
-const HotSymbol = '🔥'; // Fire 
+const HotSymbol = '🔥'; // Fire
 const NewSymbol = '🌑'; // New Moon
 
-class Subreddits extends React.Component {
-  
+class Subreddits extends React.PureComponent {
+
   constructor(props) {
     super(props);
-    this.state = { 
-      subreddits: [], 
-      selectedSub: 'AskReddit', 
+    this.state = {
+      subreddits: [],
+      selectedSub: 'AskReddit',
       selectedPost: null,
       hot: true // sort order: hot vs. new
     }
@@ -80,26 +80,28 @@ class Subreddits extends React.Component {
       method: 'get',
       }).then(response => {
         const listing = response.data.data.children.map(list => {
-          return Object({ display_name: list.data.display_name, 
+          return Object({ display_name: list.data.display_name,
                           description: list.data.public_description })
       });
       this.setState({ subreddits: listing });
-    });  
+    });
   }
-  
+
   onSelectSub = (s) => {
     this.setState({ selectedSub: s });
+    return false;
   }
 
   onSelectPost = (p) => {
     this.setState({ selectedPost: p});
+    return false;
   }
 
   renderDetails(p) {
     if (p === null) {
       // if null do nothing
-      return 
-    } 
+      return
+    }
     return <Details title={p.title} author={p.author} text={p.text} />
   }
 
@@ -108,7 +110,7 @@ class Subreddits extends React.Component {
       // if null do nothing
       return
     }
-    return <Posts onSelectPost={this.onSelectPost} subreddit={selected} hot={this.state.hot} />  
+    return <Posts onSelectPost={this.onSelectPost} subreddit={selected} hot={this.state.hot} />
   }
 
   handleSort = () => {
@@ -130,22 +132,22 @@ class Subreddits extends React.Component {
         <TopHeader>
           <Button onClick={this.handleSort}>{this.state.hot ? HotSymbol : NewSymbol}</Button>
           <Input type="text" placeholder={selectedSub} onChange={this.handleOnChange} />
-          {selectedPost === null ? 'No selected post.' : selectedPost.title}          
+          {selectedPost === null ? 'No selected post.' : selectedPost.title}
         </TopHeader>
-        <Column>         
+        <Column>
           <Header>Subreddits</Header>
-          {subreddits.map(s => { 
+          {subreddits.map(s => {
             return (
               <div>
-                <Subreddit 
+                <Subreddit
                   onSelectSub={this.onSelectSub}
                   onSelectPost={this.onSelectPost}
            	  subreddit={s.display_name}
-                  active={selectedSub === s.display_name ? true : false} 
-           	  description={s.description} /> 
+                  active={selectedSub === s.display_name ? true : false}
+           	  description={s.description} />
               </div>
              )
-          })} 
+          })}
         </Column>
         <Column>
           <Header>Posts ({this.state.hot ? `${HotSymbol} Hottest` : `${NewSymbol} Newest`})</Header>
@@ -153,8 +155,8 @@ class Subreddits extends React.Component {
         </Column>
         <Column>
           <Header>Details</Header>
-          {selectedPost === null 
-            ? <Message>Select a post to see details here.</Message> 
+          {selectedPost === null
+            ? <Message>Select a post to see details here.</Message>
             : this.renderDetails(selectedPost)}
         </Column>
       </Container>

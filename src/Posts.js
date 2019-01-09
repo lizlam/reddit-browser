@@ -14,7 +14,7 @@ export default class Posts extends React.Component {
     hot: PropTypes.bool.isRequired,
   }
 
-  componentDidUpdate() {
+  fetchPosts = () => {
     const sort = this.props.hot ? 'hot' : 'new';
     const url = `https://www.reddit.com/r/${this.props.subreddit}/${sort}.json`;
       axios({
@@ -22,28 +22,38 @@ export default class Posts extends React.Component {
         method: 'get',
       }).then(response => {
         const listing = response.data.data.children.map(list => {
-          return Object({ title: list.data.title, 
-            author: list.data.author, 
+          return Object({ title: list.data.title,
+            author: list.data.author,
             text: list.data.selftext,
-            url: list.data.url, 
+            url: list.data.url,
             name: list.data.name})
         });
         this.setState({ posts: listing });
-      });  
+      });
+  }
+
+  componentDidMount() {
+    this.fetchPosts();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.subreddit !== this.props.subreddit || prevProps.hot !== this.props.hot) {
+      this.fetchPosts();
+    }
   }
 
   render() {
     const { posts } = this.state;
       return (
- 	<div>
+ 	      <div>
           {posts.map(p => {
             return(
               <div>
                 <Entry title={p.title} onSelectPost={this.props.onSelectPost} author={p.author} text={p.text} />
               </div>
- 	    )
- 	  })}
- 	</div>
-      );
-  } 
+      	    )
+ 	        })}
+      	</div>
+    );
+  }
 }
