@@ -17,22 +17,61 @@ const Column = styled.div`
 
 const Message = styled.div`
   font-family: Arial;
-  padding-left: 50%;
+  padding-left: 30%;
 `;
 
 const Header = styled.h2`
   font-family: Arial;
-  padding-left: 50%;
+  padding-left: 30%;
 `
+
+const TopHeader = styled.h1`
+  font-family: Arial;
+  font-size: 60px;
+  padding: 25px;
+  height: 75px;
+  background-color: #b19cd9;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border: 4px solid black;
+`
+
+const Input = styled.input`
+  font-family: Arial;
+  font-size: 60px;
+  background-color: #b19cd9;
+  border: none;
+  box-shadow: 
+    inset 0 0 8px  rgba(0,0,0,0.1),
+          0 0 16px rgba(0,0,0,0.1); 
+  width: 400px;
+  text-align: center;
+  margin: 20px;
+  *:placeholder {
+    color: black;
+  }
+`
+
+const Button = styled.button`
+  font-family: Arial;
+  font-size: 60px;
+  background-color: #b19cd9;
+  border: none;
+`
+const HotSymbol = '🔥'; // Fire 
+const NewSymbol = '🌑'; // New Moon
+
 class Subreddits extends React.Component {
   
   constructor(props) {
     super(props);
 	  this.state = { 
       subreddits: [], 
-      clicked: false, 
       selectedSub: 'AskReddit', 
-      selectedPost: null}
+      selectedPost: null,
+      hot: true // sort order: hot vs. new
+    }
 	}
 
   componentDidMount() {
@@ -52,7 +91,6 @@ class Subreddits extends React.Component {
   }
 
   onSelectPost = (p) => {
-    console.log(p.author);
     this.setState({ selectedPost: p});
   }
 
@@ -69,15 +107,31 @@ class Subreddits extends React.Component {
       // if null do nothing
       return
     }
-    return <Posts onSelectPost={this.onSelectPost} subreddit={selected} />  
+    return <Posts onSelectPost={this.onSelectPost} subreddit={selected} hot={this.state.hot} />  
+  }
+
+  handleSort = () => {
+    if (this.state.hot === false) {
+      this.setState({ hot: true });
+    } else {
+      this.setState({ hot: false });
+    }
+  }
+
+  handleOnChange = (e) => {
+    this.setState({ selectedSub: e.target.value })
   }
 
   render() {
-    const { subreddits, clicked, selectedSub, selectedPost } = this.state;
-    console.log(selectedSub);
+    const { subreddits, clicked, selectedSub, selectedPost, hot } = this.state;
     return (
       <Container>
-        <Column>
+        <TopHeader>
+          <Button onClick={this.handleSort}>{this.state.hot ? HotSymbol : NewSymbol}</Button>
+          <Input type="text" placeholder={selectedSub} onChange={this.handleOnChange} />
+          {selectedPost === null ? 'No selected post.' : selectedPost.title}          
+        </TopHeader>
+        <Column>         
           <Header>Subreddits</Header>
           {subreddits.map(s => { 
             return (
@@ -93,7 +147,7 @@ class Subreddits extends React.Component {
           })} 
         </Column>
         <Column>
-          <Header>Posts</Header>
+          <Header>Posts ({this.state.hot ? `${HotSymbol} Hottest` : `${NewSymbol} Newest`})</Header>
           {this.renderPosts(selectedSub)}
         </Column>
         <Column>

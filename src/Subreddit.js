@@ -1,8 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import Posts from './Posts';
 import styled from 'styled-components';
 
 const SubredditEntry = styled.div`
@@ -11,16 +8,24 @@ const SubredditEntry = styled.div`
   margin-left: 25px;
   padding: 10px;
   top-margin: 20px;
-  background-color: #ff6c1;
+  background-color: #fff1f3;
+  box-shadow: 1px 1px 1px black;
   border-left: 3px solid black;
+  transition: all 0.9s ease-out;
+  
+  :hover {
+    background-color: grey; 
+  }
 `;
 
 const Header = styled.div`
   font-size: 20px;
   margin-bottom: 1px;
-  :hover {
-    color: green; 
-  }
+`;
+
+const SelectedHeader = styled.div`
+  font-size: 40px;
+  margin-bottom: 1px;
 `;
 
 const Description = styled.p`
@@ -38,27 +43,15 @@ export default class Subreddit extends React.Component {
     subreddit: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired, 
     onSelectSub: PropTypes.func.isRequired,
-    selectedSub: PropTypes.string,
     active: PropTypes.bool.isRequired,
   };
 
-
-	
-  handleClick = () => {
-    if (this.props.selectedSub === this.props.subreddit) {
-
-    }
-  }
-
   render() {
-    const { subreddit, selectedSub, description, onSelectSub } = this.props;
-    const { clicked } = this.state;
+    const { subreddit, description, onSelectSub } = this.props;
     return (
       <div>
-        <SubredditEntry>
-          <Header onClick={() => onSelectSub(this.props.subreddit) && this.handleClick}>
-            {subreddit} {this.props.active ? '<' : ''}  
-          </Header>
+        <SubredditEntry onClick={() => onSelectSub(this.props.subreddit)}>
+          {this.props.active ? <SelectedHeader>{subreddit}</SelectedHeader> : <Header>{subreddit}</Header>}  
           <Description>{description}</Description>
         </SubredditEntry>
         

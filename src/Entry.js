@@ -12,24 +12,39 @@ const Post = styled.div`
   font-size: 20px;
   box-shadow: 1px 1px 1px black;
   background-color: #d0f0d0;
-    :hover {
-      background-color: grey;
-    };
+  :hover {
+    background-color: grey;
+  };
 `;
 
 export default class Entry extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { details: false }    
+  }
+
 	static propTypes = {
     title: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
     text: PropTypes.string,
     onSelectPost: PropTypes.func.isRequired,
+    clicked: PropTypes.bool,
 	};
 
+  handleClick = () => {
+    if (this.state.details === false) {
+      this.setState({ details: true });
+    } else {
+      this.setState({ details: false });
+    }
+  }
+
 	render() {
-		const { title } = this.props;
+		const { title, clicked } = this.props;
     return (
-      <div>
- 		    <Post onClick={() => this.props.onSelectPost(this.props)}>{title}</Post>
+      <div onClick={() => this.props.onSelectPost(this.props)} >
+ 		    <Post onClick={this.handleClick}> {title}</Post>
+          { clicked ? <hr /> : ''}
  		  </div>
 		);
 	} 
