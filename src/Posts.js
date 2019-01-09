@@ -44,16 +44,16 @@ export default class Posts extends React.Component {
 
   render() {
     const { posts } = this.state;
-      return (
- 	      <div>
-          {posts.map(p => {
-            return(
-              <div>
-                <Entry title={p.title} onSelectPost={this.props.onSelectPost} author={p.author} text={p.text} />
-              </div>
-      	    )
- 	        })}
-      	</div>
+    return (
+      <div>
+        {posts.map(p => {
+          return(
+            <div>
+              <Entry title={p.title} onSelectPost={this.props.onSelectPost} author={p.author} text={p.text} />
+            </div>
+      	   )
+         })}
+      </div>
     );
   }
 }

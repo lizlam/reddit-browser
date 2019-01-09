@@ -54,7 +54,6 @@ export default class Subreddit extends React.Component {
           {this.props.active ? <SelectedHeader>{subreddit}</SelectedHeader> : <Header>{subreddit}</Header>}  
           <Description>{description}</Description>
         </SubredditEntry>
-        
       </div>
     );
   }
