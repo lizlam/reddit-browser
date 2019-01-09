@@ -21,21 +21,21 @@ const Title = styled.h1`
 `
 
 export default class Details extends React.Component {
-	static propTypes = {
+  static propTypes = {
     title: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
     text: PropTypes.string,
-	};
+  };
 
-	render() {
-		const { title, author, text } = this.props;
+  render() {
+    const { title, author, text } = this.props;
     return (
       <div>
         <Title>{title}</Title>
         <Info>By: {author} <hr />
           {text} 
- 		    </Info>
+        </Info>
       </div>
-		);
-	} 
+    );
+  } 
 }

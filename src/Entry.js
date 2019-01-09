@@ -23,13 +23,13 @@ export default class Entry extends React.Component {
     this.state = { details: false }    
   }
 
-	static propTypes = {
+  static propTypes = {
     title: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
     text: PropTypes.string,
     onSelectPost: PropTypes.func.isRequired,
     clicked: PropTypes.bool,
-	};
+  };
 
   handleClick = () => {
     if (this.state.details === false) {
@@ -39,13 +39,13 @@ export default class Entry extends React.Component {
     }
   }
 
-	render() {
-		const { title, clicked } = this.props;
+  render() {
+    const { title, clicked } = this.props;
     return (
       <div onClick={() => this.props.onSelectPost(this.props)} >
- 		    <Post onClick={this.handleClick}> {title}</Post>
+        <Post onClick={this.handleClick}> {title}</Post>
           { clicked ? <hr /> : ''}
- 		  </div>
-		);
-	} 
+      </div>
+    );
+  } 
 }

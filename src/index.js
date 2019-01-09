@@ -66,25 +66,26 @@ class Subreddits extends React.Component {
   
   constructor(props) {
     super(props);
-	  this.state = { 
+    this.state = { 
       subreddits: [], 
       selectedSub: 'AskReddit', 
       selectedPost: null,
       hot: true // sort order: hot vs. new
     }
-	}
+  }
 
   componentDidMount() {
-		axios({
+    axios({
       url: 'https://www.reddit.com/subreddits/popular.json',
       method: 'get',
-		}).then(response => {
-      const listing = response.data.data.children.map(list => {
-         return Object({ display_name: list.data.display_name, description: list.data.public_description })
+      }).then(response => {
+        const listing = response.data.data.children.map(list => {
+          return Object({ display_name: list.data.display_name, 
+                          description: list.data.public_description })
       });
       this.setState({ subreddits: listing });
-		});  
-	}
+    });  
+  }
   
   onSelectSub = (s) => {
     this.setState({ selectedSub: s });
@@ -135,15 +136,15 @@ class Subreddits extends React.Component {
           <Header>Subreddits</Header>
           {subreddits.map(s => { 
             return (
-          	  <div>
-           	    <Subreddit 
+              <div>
+                <Subreddit 
                   onSelectSub={this.onSelectSub}
                   onSelectPost={this.onSelectPost}
-           	      subreddit={s.display_name}
+           	  subreddit={s.display_name}
                   active={selectedSub === s.display_name ? true : false} 
-           	      description={s.description} /> 
-           	  </div>
-            )
+           	  description={s.description} /> 
+              </div>
+             )
           })} 
         </Column>
         <Column>
